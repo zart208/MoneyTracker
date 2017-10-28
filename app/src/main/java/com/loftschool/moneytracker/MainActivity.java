@@ -10,4 +10,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("onStart() override");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("onStop() override");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("onDestroy() override");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.out.println("onPause() override");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("onResume() override");
+    }
 }
