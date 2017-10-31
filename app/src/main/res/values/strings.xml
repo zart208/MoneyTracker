@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MoneyTracker</string>
-    <string name="text_view_text">Hello World!</string>
+    <string name="caption">Название</string>
+    <string name="coast">0</string>
+    <string name="currency"> &#8381;</string>
+    <string name="add_button_description">Add new record</string>
 </resources>
