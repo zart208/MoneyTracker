@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_pattern"
+    tools:context="com.loftschool.moneytracker.ItemsActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/recycler_padding_bottom"
+        android:paddingEnd="@dimen/recycler_padding_right"
+        android:paddingStart="@dimen/recycler_padding_left"
+        android:paddingTop="@dimen/recycler_padding_top"
+        tools:listitem="@layout/item">
+
+    </android.support.v7.widget.RecyclerView>
+
+</FrameLayout>

@@ -2,5 +2,11 @@
 <resources>
     <dimen name="text_size">20sp</dimen>
     <dimen name="shadow">10dp</dimen>
-    <dimen name="currency_text_size">16sp</dimen>
+    <dimen name="currency_text_size">24sp</dimen>
+    <dimen name="linear_layout_margin">5dp</dimen>
+    <dimen name="linear_layout_minHeigt">65dp</dimen>
+    <dimen name="recycler_padding_left">5dp</dimen>
+    <dimen name="recycler_padding_right">5dp</dimen>
+    <dimen name="recycler_padding_bottom" format="float" type="dimen">16.5dp</dimen>
+    <dimen name="recycler_padding_top" format="float" type="dimen">16.5dp</dimen>
 </resources>
