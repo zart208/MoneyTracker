@@ -5,4 +5,16 @@
     <string name="currency"> &#8381;</string>
     <string name="add_button_description">Add new record</string>
     <string name="price_regex_string">%1$s %2$s</string>
+    <string name="add_activity_title">Новая запись</string>
+    <string name="main_activity_title">Учет бюджета</string>
+    <string name="tab_expenses">Расходы</string>
+    <string name="tab_incomes">Доходы</string>
+    <string name="tab_balance">Баланс</string>
+    <string name="under_construction_description">Under Construction</string>
+
+    <string-array name="tabs_titles">
+        <item>@string/tab_expenses</item>
+        <item>@string/tab_incomes</item>
+        <item>@string/tab_balance</item>
+    </string-array>
 </resources>

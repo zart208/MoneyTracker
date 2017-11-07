@@ -7,4 +7,8 @@
     <color name="text_color">#ffffff</color>
     <color name="name_bg_color">#FCC418</color>
     <color name="price_bg_color">#E9B11D</color>
+    <color name="title_text_color">#ffffff</color>
+    <color name="tab_text_color">#dbece6</color>
+    <color name="tab_selected_text_color">#ffffff</color>
+    <color name="tab_indicator_color">#f5fd7e</color>
 </resources>
