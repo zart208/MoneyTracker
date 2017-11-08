@@ -9,4 +9,16 @@
     <dimen name="recycler_padding_right">5dp</dimen>
     <dimen name="recycler_padding_bottom" format="float" type="dimen">16.5dp</dimen>
     <dimen name="recycler_padding_top" format="float" type="dimen">16.5dp</dimen>
+    <dimen name="app_bar_height">57dp</dimen>
+    <dimen name="linear_layout_padding_bottom">24dp</dimen>
+    <dimen name="linear_layout_padding_end">22dp</dimen>
+    <dimen name="linear_layout_padding_start">23dp</dimen>
+    <dimen name="linear_layout_padding_top">28dp</dimen>
+    <dimen name="caption_edit_text_width">88dp</dimen>
+    <dimen name="caption_edit_text_height">20dp</dimen>
+    <dimen name="coast_edit_text_width">11dp</dimen>
+    <dimen name="coast_edit_text_height">20dp</dimen>
+    <dimen name="add_image_button_width">25dp</dimen>
+    <dimen name="add_image_button_height">25dp</dimen>
+    <dimen name="currency_text_view_width" format="float" type="dimen">10.3dp</dimen>
 </resources>
