@@ -1,27 +1,17 @@
 package com.loftschool.moneytracker;
 
 public class Item {
-    private String name;
-    private int price;
+    static final String TYPE_EXPENSE = "expense";
+    static final String TYPE_INCOME = "income";
+    static final String TYPE_UNKNOWN = "unknown";
+    public int id;
+    public String name;
+    String type;
+    int price;
 
-    Item(String name, int price) {
+    Item(String name, int price, String type) {
         this.name = name;
         this.price = price;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
+        this.type = type;
     }
 }

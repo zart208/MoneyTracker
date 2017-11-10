@@ -22,21 +22,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     ItemsAdapter(Context activityContext) {
         context = activityContext;
-        items.add(new Item("Молоко", 35));
-        items.add(new Item("Зубная щетка", 55));
-        items.add(new Item("Сковородка с антипригарным покрытием", 1500));
-        items.add(new Item("Яйцв", 46));
-        items.add(new Item("Шампунь", 199));
-        items.add(new Item("Туалетная бумага", 12));
-        items.add(new Item("Бананы", 129));
-        items.add(new Item("Яблоки", 79));
-        items.add(new Item("Сосиски", 199));
-        items.add(new Item("Джинсы", 2499));
-        items.add(new Item("Куртка", 5999));
-        items.add(new Item("Кеды", 2799));
-        items.add(new Item("Проезд", 1690));
-        items.add(new Item("Аренда", 25000));
-        items.add(new Item("Коммунальные платежи", 3289));
+    }
+
+    void setItems(List<Item> items) {
+        this.items = items;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -66,9 +56,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         }
 
         void bind(Item item, Context activityContext) {
-            name.setText(item.getName());
+            name.setText(item.name);
             String regExString = activityContext.getString(R.string.price_regex_string,
-                    String.valueOf(item.getPrice()), activityContext.getString(R.string.currency));
+                    String.valueOf(item.price), activityContext.getString(R.string.currency));
             Spannable string = new SpannableString(regExString);
             string.setSpan(new ForegroundColorSpan(Color.GRAY), string.length() - 1, string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             price.setText(string);
