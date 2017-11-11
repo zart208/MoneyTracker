@@ -17,7 +17,7 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        setTitle("Новая запись");
+        setTitle(getString(R.string.add_activity_title));
         final EditText captionEdit = findViewById(R.id.caption);
         final EditText coastEdit = findViewById(R.id.coast);
         final ImageButton addButton = findViewById(R.id.add_button);

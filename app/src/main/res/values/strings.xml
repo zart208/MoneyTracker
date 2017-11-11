@@ -11,6 +11,9 @@
     <string name="tab_incomes">Доходы</string>
     <string name="tab_balance">Баланс</string>
     <string name="under_construction_description">Under Construction</string>
+    <string name="error_loading_items_text">Error!!!</string>
+    <string name="erorr_item_adding_text">Error during item adding!!!</string>
+    <string name="item_adding_text">Item added successful!!!</string>
 
     <string-array name="tabs_titles">
         <item>@string/tab_expenses</item>
