@@ -11,4 +11,5 @@
     <color name="tab_text_color">#dbece6</color>
     <color name="tab_selected_text_color">#ffffff</color>
     <color name="tab_indicator_color">#f5fd7e</color>
+    <color name="fab_bg_color">#1e9586</color>
 </resources>

@@ -21,4 +21,7 @@
     <dimen name="add_image_button_width">25dp</dimen>
     <dimen name="add_image_button_height">25dp</dimen>
     <dimen name="currency_text_view_width" format="float" type="dimen">10.3dp</dimen>
+    <dimen name="light_shadow">5dp</dimen>
+    <dimen name="fab_width">56dp</dimen>
+    <dimen name="fab_height">56dp</dimen>
 </resources>
