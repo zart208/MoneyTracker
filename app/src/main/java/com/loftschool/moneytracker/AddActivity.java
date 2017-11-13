@@ -67,7 +67,8 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!isEnabledAddButton) {
-                    Toast.makeText(AddActivity.this, "Necessary fields not filled", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddActivity.this, "Necessary fields not filled", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 Intent result = new Intent();
                 result.putExtra(RESULT_ITEM, new Item(captionEdit.getText().toString(), Integer.valueOf(coastEdit.getText().toString()), type));
