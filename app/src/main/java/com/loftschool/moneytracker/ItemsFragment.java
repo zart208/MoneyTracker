@@ -1,8 +1,10 @@
 package com.loftschool.moneytracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -19,6 +21,7 @@ import com.loftschool.moneytracker.api.LSApi;
 import java.io.IOException;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static com.loftschool.moneytracker.Item.TYPE_UNKNOWN;
 
 public class ItemsFragment extends Fragment {
@@ -60,6 +63,16 @@ public class ItemsFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        FloatingActionButton fab = view.findViewById(R.id.fab_add);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddActivity.class);
+                intent.putExtra(AddActivity.EXTRA_TYPE, type);
+                startActivityForResult(intent, AddActivity.RC_ADD_ITEM);
+            }
+        });
         loadItems();
     }
 
@@ -108,18 +121,18 @@ public class ItemsFragment extends Fragment {
 
             @Override
             public Loader onCreateLoader(int id, Bundle args) {
-                    return new AsyncTaskLoader(getContext()) {
-                        @Nullable
-                        @Override
-                        public Object loadInBackground() {
-                            try {
-                                return api.add(item.id, item.name, item.price, item.type).execute().body();
-                            } catch (IOException e) {
-                                showError(e.getMessage());
-                                return null;
-                            }
+                return new AsyncTaskLoader(getContext()) {
+                    @Nullable
+                    @Override
+                    public Object loadInBackground() {
+                        try {
+                            return api.add(item.id, item.name, item.price, item.type).execute().body();
+                        } catch (IOException e) {
+                            showError(e.getMessage());
+                            return null;
                         }
-                    };
+                    }
+                };
             }
 
             @Override
@@ -136,5 +149,14 @@ public class ItemsFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AddActivity.RC_ADD_ITEM && resultCode == RESULT_OK) {
+            Item item = (Item) data.getSerializableExtra(AddActivity.RESULT_ITEM);
+            Toast.makeText(getContext(), item.name + " " + item.price, Toast.LENGTH_LONG).show();
+        }
     }
 }
