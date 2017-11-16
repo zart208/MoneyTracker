@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/linear_layout_margin"
+    android:background="@drawable/item_bg"
+    android:foreground="?android:selectableItemBackground"
     android:minHeight="@dimen/linear_layout_minHeigt"
     android:orientation="horizontal">
 
@@ -11,7 +13,6 @@
         android:id="@+id/item_name"
         style="@style/ItemsTextView"
         android:layout_weight="3"
-        android:background="@color/name_bg_color"
         android:textSize="@dimen/text_size"
         tools:text="Молоко" />
 
@@ -19,7 +20,7 @@
         android:id="@+id/item_price"
         style="@style/ItemsTextView"
         android:layout_weight="0"
-        android:background="@color/price_bg_color"
+        android:background="@color/item_color_shadow"
         android:textSize="@dimen/currency_text_size"
         tools:text="35 ₽" />
 </LinearLayout>

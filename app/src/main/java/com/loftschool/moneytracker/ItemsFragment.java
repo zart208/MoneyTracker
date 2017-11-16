@@ -5,13 +5,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -26,17 +32,53 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.loftschool.moneytracker.Item.TYPE_UNKNOWN;
 
 public class ItemsFragment extends Fragment {
-    public static final int LOADER_ITEMS = 0;
+
+    public static final int RC_CONFIRM = 111;
     public static final int LOADER_ADD_ITEMS = 1;
+    private static final String TAG = "ItemsFragment";
     private static final String KEY_TYPE = "TYPE";
     RecyclerView recyclerView;
+    FloatingActionButton fab;
     private String type = TYPE_UNKNOWN;
     private ItemsAdapter adapter;
     private LSApi api;
+    private ActionMode actionMode;
+    private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.items_menu, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_remove:
+                    showDialog();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            adapter.clearSelections();
+            actionMode = null;
+            fab.show();
+        }
+    };
 
     public static ItemsFragment createItemsFragment(String type) {
         Bundle bundle = new Bundle();
@@ -64,12 +106,45 @@ public class ItemsFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+        fab = view.findViewById(R.id.fab_add);
         recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-        FloatingActionButton fab = view.findViewById(R.id.fab_add);
+        adapter.setListener(new ItemsAdapterListener() {
+            @Override
+            public void onItemClick(Item item, int position) {
+                if (isInActionMode()) {
+                    if (adapter.getSelectedItemCount() == 1
+                            && adapter.getSelectedItems().contains(new Integer(position))) {
+                        actionMode.finish();
+                        return;
+                    }
+                    toggleSelection(position);
+                }
+            }
 
+            @Override
+            public void onItemLongClick(Item item, int position) {
+                if (isInActionMode()) {
+                    return;
+                }
+                actionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(actionModeCallback);
+                fab.hide();
+                toggleSelection(position);
+            }
+
+            private void toggleSelection(int position) {
+                adapter.toggleSelection(position);
+                actionMode.setTitle(view.getContext().getString(R.string.action_title, adapter.getSelectedItemCount()));
+            }
+
+            private boolean isInActionMode() {
+                return actionMode != null;
+            }
+        });
+
+        FloatingActionButton fab = view.findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,23 +154,6 @@ public class ItemsFragment extends Fragment {
             }
         });
         loadItems();
-    }
-
-    private void loadItems() {
-        api.items(type).enqueue(new Callback<List<Item>>() {
-            @Override
-            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-                List<Item> items = new ArrayList<>();
-                items.addAll(response.body());
-                adapter.setItems(items);
-                recyclerView.getAdapter().notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<List<Item>> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 //    private void loadItems() {
@@ -133,6 +191,23 @@ public class ItemsFragment extends Fragment {
 //            }
 //        }).forceLoad();
 //    }
+
+    private void loadItems() {
+        api.items(type).enqueue(new Callback<List<Item>>() {
+            @Override
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                List<Item> items = new ArrayList<>();
+                items.addAll(response.body());
+                adapter.setItems(items);
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     private void showError(String error) {
         Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
@@ -179,6 +254,31 @@ public class ItemsFragment extends Fragment {
         if (requestCode == AddActivity.RC_ADD_ITEM && resultCode == RESULT_OK) {
             Item item = (Item) data.getSerializableExtra(AddActivity.RESULT_ITEM);
             Toast.makeText(getContext(), item.name + " " + item.price, Toast.LENGTH_LONG).show();
+        } else if (requestCode == RC_CONFIRM && resultCode == RESULT_OK) {
+            okClicked();
+        } else if (requestCode == RC_CONFIRM && resultCode == RESULT_CANCELED) {
+            cancelClicked();
         }
+    }
+
+    private void removeSelectedItems() {
+        for (int i = adapter.getSelectedItems().size() - 1; i >= 0; i--) {
+            adapter.remove(adapter.getSelectedItems().get(i));
+        }
+    }
+
+    private void showDialog() {
+        DialogFragment dialog = new ConfirmationDialog();
+        dialog.setTargetFragment(this, RC_CONFIRM);
+        dialog.show(getFragmentManager(), "Confirmation");
+    }
+
+    public void okClicked() {
+        removeSelectedItems();
+        actionMode.finish();
+    }
+
+    public void cancelClicked() {
+        actionMode.finish();
     }
 }

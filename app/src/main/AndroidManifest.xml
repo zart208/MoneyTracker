@@ -14,8 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity"
-            android:label="@string/main_activity_title">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/main_activity_title"
+            android:theme="@style/AppTheme.Toolbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
