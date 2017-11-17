@@ -1,5 +1,6 @@
 package com.loftschool.moneytracker.api;
 
+import com.loftschool.moneytracker.AuthResult;
 import com.loftschool.moneytracker.Item;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public interface LSApi {
     @GET("items")
     Call<List<Item>> items(@Query("type") String type);
 
+    @GET("auth")
+    Call<AuthResult> auth(@Query("social_user_id") String socialUserId);
+
     @POST("items/add")
-    Call add(@Query("id") int id, @Query("name") String name, @Query("price") int price, @Query("type") String type);
+    Call<Integer> add(@Query("name") String name, @Query("price") int price, @Query("type") String type);
 }
