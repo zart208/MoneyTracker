@@ -7,9 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,11 +18,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.loftschool.moneytracker.api.LSApi;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,13 +33,11 @@ import static android.app.Activity.RESULT_OK;
 import static com.loftschool.moneytracker.Item.TYPE_UNKNOWN;
 
 public class ItemsFragment extends Fragment {
-
     public static final int RC_CONFIRM = 111;
-    public static final int LOADER_ADD_ITEMS = 1;
-    private static final String TAG = "ItemsFragment";
     private static final String KEY_TYPE = "TYPE";
     RecyclerView recyclerView;
     FloatingActionButton fab;
+    SwipeRefreshLayout refreshLayout;
     private String type = TYPE_UNKNOWN;
     private ItemsAdapter adapter;
     private LSApi api;
@@ -111,6 +105,13 @@ public class ItemsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        refreshLayout = view.findViewById(R.id.refresh);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadItems();
+            }
+        });
         adapter.setListener(new ItemsAdapterListener() {
             @Override
             public void onItemClick(Item item, int position) {
@@ -129,7 +130,7 @@ public class ItemsFragment extends Fragment {
                 if (isInActionMode()) {
                     return;
                 }
-                actionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(actionModeCallback);
+                actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
                 fab.hide();
                 toggleSelection(position);
             }
@@ -156,42 +157,6 @@ public class ItemsFragment extends Fragment {
         loadItems();
     }
 
-//    private void loadItems() {
-//        getLoaderManager().initLoader(LOADER_ITEMS, null, new LoaderManager.LoaderCallbacks<List<Item>>() {
-//
-//            @Override
-//            public Loader<List<Item>> onCreateLoader(int id, Bundle args) {
-//                return new AsyncTaskLoader<List<Item>>(getContext()) {
-//                    @Override
-//                    public List<Item> loadInBackground() {
-//                        List<Item> items;
-//                        try {
-//                            items = api.items(type).execute().body();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                            return null;
-//                        }
-//                        return items;
-//                    }
-//                };
-//            }
-//
-//            @Override
-//            public void onLoadFinished(Loader<List<Item>> loader, List<Item> items) {
-//                if (items == null) {
-//                    showError(getString(R.string.error_loading_items_text));
-//                } else {
-//                    adapter.setItems(items);
-//                }
-//            }
-//
-//            @Override
-//            public void onLoaderReset(Loader<List<Item>> loader) {
-//
-//            }
-//        }).forceLoad();
-//    }
-
     private void loadItems() {
         api.items(type).enqueue(new Callback<List<Item>>() {
             @Override
@@ -200,50 +165,26 @@ public class ItemsFragment extends Fragment {
                 items.addAll(response.body());
                 adapter.setItems(items);
                 recyclerView.getAdapter().notifyDataSetChanged();
+                refreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<Item>> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                t.getMessage();
             }
         });
     }
 
-    private void showError(String error) {
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
-    }
-
     private void addItem(final Item item) {
-        getLoaderManager().initLoader(LOADER_ADD_ITEMS, null, new LoaderManager.LoaderCallbacks() {
-
+        api.add(item.name, item.price, item.type).enqueue(new Callback<Integer>() {
             @Override
-            public Loader onCreateLoader(int id, Bundle args) {
-                return new AsyncTaskLoader(getContext()) {
-                    @Nullable
-                    @Override
-                    public Object loadInBackground() {
-                        try {
-                            return api.add(item.id, item.name, item.price, item.type).execute().body();
-                        } catch (IOException e) {
-                            showError(e.getMessage());
-                            return null;
-                        }
-                    }
-                };
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+
             }
 
             @Override
-            public void onLoadFinished(Loader loader, Object item) {
-                if (item == null) {
-                    showError(getString(R.string.erorr_item_adding_text));
-                } else {
-                    Toast.makeText(getContext(), R.string.item_adding_text, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onLoaderReset(Loader loader) {
-
+            public void onFailure(Call<Integer> call, Throwable t) {
+                t.getMessage();
             }
         });
     }
@@ -253,7 +194,7 @@ public class ItemsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AddActivity.RC_ADD_ITEM && resultCode == RESULT_OK) {
             Item item = (Item) data.getSerializableExtra(AddActivity.RESULT_ITEM);
-            Toast.makeText(getContext(), item.name + " " + item.price, Toast.LENGTH_LONG).show();
+            addItem(item);
         } else if (requestCode == RC_CONFIRM && resultCode == RESULT_OK) {
             okClicked();
         } else if (requestCode == RC_CONFIRM && resultCode == RESULT_CANCELED) {

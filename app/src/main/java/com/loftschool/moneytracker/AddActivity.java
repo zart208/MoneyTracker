@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddActivity extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class AddActivity extends AppCompatActivity {
         final EditText captionEdit = findViewById(R.id.caption);
         final EditText coastEdit = findViewById(R.id.coast);
         final ImageButton addButton = findViewById(R.id.add_button);
+        final TextView currencyText = findViewById(R.id.currency_text);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,11 +58,14 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 isEnabledAddButton = (!TextUtils.isEmpty(charSequence) && captionEdit.getText().length() != 0);
+                currencyText.setHintTextColor(getResources().getColor(R.color.inputted_text_color));
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                if (coastEdit.getText().length() == 0) {
+                    currencyText.setHintTextColor(getResources().getColor(R.color.hint_text_color));
+                }
             }
         });
         addButton.setOnClickListener(new View.OnClickListener() {
