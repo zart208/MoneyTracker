@@ -6,15 +6,22 @@
     android:background="@drawable/bg_pattern"
     tools:context="com.loftschool.moneytracker.ItemsFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/recycler_padding_bottom"
-        android:paddingEnd="@dimen/recycler_padding_right"
-        android:paddingStart="@dimen/recycler_padding_left"
-        android:paddingTop="@dimen/recycler_padding_top"
-        tools:listitem="@layout/item"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/light_shadow"
+            android:paddingBottom="@dimen/recycler_padding_bottom"
+            android:paddingEnd="@dimen/recycler_padding_right"
+            android:paddingStart="@dimen/recycler_padding_left"
+            android:paddingTop="@dimen/recycler_padding_top"
+            tools:listitem="@layout/item" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add"
@@ -23,7 +30,7 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="18dp"
         android:backgroundTint="@color/fab_bg_color"
-        android:src="@drawable/ic_add_white_24dp"
-         />
+        android:elevation="@dimen/shadow"
+        android:src="@drawable/ic_add_white_24dp" />
 
 </FrameLayout>

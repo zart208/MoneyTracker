@@ -3,6 +3,7 @@ package com.loftschool.moneytracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,9 +47,9 @@ public class AuthActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
-            final GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess() && result.getSignInAccount() != null) {
-                final GoogleSignInAccount account = result.getSignInAccount();
+                GoogleSignInAccount account = result.getSignInAccount();
                 api.auth(account.getId()).enqueue(new Callback<AuthResult>() {
                     @Override
                     public void onResponse(Call<AuthResult> call, Response<AuthResult> response) {
@@ -57,7 +58,7 @@ public class AuthActivity extends AppCompatActivity {
                             ((App) getApplication()).setAuthToken(authResult.authToken);
                             finish();
                         } else {
-                            showError("Error");
+                            showError(getString(R.string.error));
                         }
                     }
 

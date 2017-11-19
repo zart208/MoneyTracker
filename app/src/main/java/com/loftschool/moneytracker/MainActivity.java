@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!((App)getApplication()).isLoggedIn()) {
+        if (!((App) getApplication()).isLoggedIn()) {
             startActivity(new Intent(this, AuthActivity.class));
         } else {
             pager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getResources()));

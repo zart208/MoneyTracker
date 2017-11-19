@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_size">20sp</dimen>
-    <dimen name="shadow">10dp</dimen>
-    <dimen name="currency_text_size">24sp</dimen>
-    <dimen name="linear_layout_margin">5dp</dimen>
+    <dimen name="currency_text_size">20sp</dimen>
+    <dimen name="card_view_margin">5dp</dimen>
     <dimen name="linear_layout_minHeigt">65dp</dimen>
     <dimen name="recycler_padding_left">5dp</dimen>
     <dimen name="recycler_padding_right">5dp</dimen>
@@ -21,7 +20,8 @@
     <dimen name="add_image_button_width">25dp</dimen>
     <dimen name="add_image_button_height">25dp</dimen>
     <dimen name="currency_text_view_width" format="float" type="dimen">10.3dp</dimen>
-    <dimen name="light_shadow">5dp</dimen>
     <dimen name="fab_width">56dp</dimen>
     <dimen name="fab_height">56dp</dimen>
+    <dimen name="light_shadow">2dp</dimen>
+    <dimen name="shadow">6dp</dimen>
 </resources>

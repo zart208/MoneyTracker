@@ -11,12 +11,13 @@
     <string name="tab_incomes">Доходы</string>
     <string name="tab_balance">Баланс</string>
     <string name="under_construction_description">Under Construction</string>
-    <string name="error_loading_items_text">Error!!!</string>
+    <string name="error">Error!!!</string>
     <string name="erorr_item_adding_text">Error during item adding!!!</string>
     <string name="item_adding_text">Item added successful!!!</string>
     <string name="delete_icon_title">Delete</string>
     <string name="confirm_remove">Delete selected items?</string>
     <string name="action_title">%1$d selected</string>
+    <string name="caption_text">Ваш незаменимый помощник в управлении бюджетом</string>
 
     <string-array name="tabs_titles">
         <item>@string/tab_expenses</item>

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.loftschool.moneytracker.api.LSApi;
 
@@ -37,6 +37,7 @@ public class ItemsFragment extends Fragment {
     private static final String KEY_TYPE = "TYPE";
     RecyclerView recyclerView;
     FloatingActionButton fab;
+    SwipeRefreshLayout refreshLayout;
     private String type = TYPE_UNKNOWN;
     private ItemsAdapter adapter;
     private LSApi api;
@@ -104,6 +105,13 @@ public class ItemsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        refreshLayout = view.findViewById(R.id.refresh);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadItems();
+            }
+        });
         adapter.setListener(new ItemsAdapterListener() {
             @Override
             public void onItemClick(Item item, int position) {
@@ -122,7 +130,7 @@ public class ItemsFragment extends Fragment {
                 if (isInActionMode()) {
                     return;
                 }
-                actionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(actionModeCallback);
+                actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
                 fab.hide();
                 toggleSelection(position);
             }
@@ -157,6 +165,7 @@ public class ItemsFragment extends Fragment {
                 items.addAll(response.body());
                 adapter.setItems(items);
                 recyclerView.getAdapter().notifyDataSetChanged();
+                refreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -164,10 +173,6 @@ public class ItemsFragment extends Fragment {
                 t.getMessage();
             }
         });
-    }
-
-    private void showError(String error) {
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
     }
 
     private void addItem(final Item item) {
@@ -182,7 +187,6 @@ public class ItemsFragment extends Fragment {
                 t.getMessage();
             }
         });
-        loadItems();
     }
 
     @Override
