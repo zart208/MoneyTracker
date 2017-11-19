@@ -3,7 +3,6 @@ package com.loftschool.moneytracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,6 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.loftschool.moneytracker.api.AuthResult;
 import com.loftschool.moneytracker.api.LSApi;
 
 import retrofit2.Call;
@@ -56,6 +56,7 @@ public class AuthActivity extends AppCompatActivity {
                         AuthResult authResult = response.body();
                         if (authResult != null ) {
                             ((App) getApplication()).setAuthToken(authResult.authToken);
+                            ((App) getApplication()).setAfterAddItem(false);
                             finish();
                         } else {
                             showError(getString(R.string.error));

@@ -26,6 +26,7 @@ public class App extends Application {
     private static final String KEY_AUTH_TOKEN = "auth-token";
     private static final String PREFERENCES_SESSION = "session";
     private static final String TAG = "App";
+    private boolean isAfterAddItem = false;
     private LSApi api;
 
     @Override
@@ -52,6 +53,14 @@ public class App extends Application {
                 .build();
 
         api = retrofit.create(LSApi.class);
+    }
+
+    public boolean isAfterAddItem() {
+        return isAfterAddItem;
+    }
+
+    public void setAfterAddItem(boolean afterAddItem) {
+        isAfterAddItem = afterAddItem;
     }
 
     public LSApi getApi() {

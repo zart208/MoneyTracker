@@ -27,8 +27,10 @@ public class MainActivity extends AppCompatActivity {
         if (!((App) getApplication()).isLoggedIn()) {
             startActivity(new Intent(this, AuthActivity.class));
         } else {
-            pager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getResources()));
-            tabs.setupWithViewPager(pager);
+            if (!((App) getApplication()).isAfterAddItem()) {
+                pager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), getResources()));
+                tabs.setupWithViewPager(pager);
+            }
         }
     }
 }

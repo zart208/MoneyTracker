@@ -19,7 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.loftschool.moneytracker.api.AddItemResult;
 import com.loftschool.moneytracker.api.LSApi;
+import com.loftschool.moneytracker.api.LogoutResult;
+import com.loftschool.moneytracker.api.RemoveResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,8 @@ public class ItemsFragment extends Fragment {
     RecyclerView recyclerView;
     FloatingActionButton fab;
     SwipeRefreshLayout refreshLayout;
+    private List<Item> items;
+    private List<Integer> itemsForRemove;
     private String type = TYPE_UNKNOWN;
     private ItemsAdapter adapter;
     private LSApi api;
@@ -59,6 +64,7 @@ public class ItemsFragment extends Fragment {
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_remove:
+                    itemsForRemove = adapter.getSelectedItems();
                     showDialog();
                     return true;
                 default:
@@ -161,11 +167,13 @@ public class ItemsFragment extends Fragment {
         api.items(type).enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-                List<Item> items = new ArrayList<>();
-                items.addAll(response.body());
-                adapter.setItems(items);
-                recyclerView.getAdapter().notifyDataSetChanged();
-                refreshLayout.setRefreshing(false);
+                if (response.isSuccessful()) {
+                    items = new ArrayList<>();
+                    items.addAll(response.body());
+                    adapter.setItems(items);
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                    refreshLayout.setRefreshing(false);
+                }
             }
 
             @Override
@@ -176,14 +184,47 @@ public class ItemsFragment extends Fragment {
     }
 
     private void addItem(final Item item) {
-        api.add(item.name, item.price, item.type).enqueue(new Callback<Integer>() {
+        api.add(item.name, item.price, item.type).enqueue(new Callback<AddItemResult>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+            public void onResponse(Call<AddItemResult> call, Response<AddItemResult> response) {
+                if (response.isSuccessful()) {
+                    loadItems();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddItemResult> call, Throwable t) {
+                t.getMessage();
+            }
+        });
+    }
+
+    private void remove() {
+        for (int i = 0; i < itemsForRemove.size(); i++) {
+            final int position = itemsForRemove.get(i);
+            api.remove(items.get(position).id).enqueue(new Callback<RemoveResult>() {
+                @Override
+                public void onResponse(Call<RemoveResult> call, Response<RemoveResult> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<RemoveResult> call, Throwable t) {
+                    t.getMessage();
+                }
+            });
+        }
+    }
+
+    private void logout() {
+        api.logout().enqueue(new Callback<LogoutResult>() {
+            @Override
+            public void onResponse(Call<LogoutResult> call, Response<LogoutResult> response) {
 
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
+            public void onFailure(Call<LogoutResult> call, Throwable t) {
                 t.getMessage();
             }
         });
@@ -196,6 +237,7 @@ public class ItemsFragment extends Fragment {
             Item item = (Item) data.getSerializableExtra(AddActivity.RESULT_ITEM);
             addItem(item);
         } else if (requestCode == RC_CONFIRM && resultCode == RESULT_OK) {
+            remove();
             okClicked();
         } else if (requestCode == RC_CONFIRM && resultCode == RESULT_CANCELED) {
             cancelClicked();

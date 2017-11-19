@@ -78,6 +78,7 @@ public class AddActivity extends AppCompatActivity {
                 Intent result = new Intent();
                 result.putExtra(RESULT_ITEM, new Item(captionEdit.getText().toString(), Integer.valueOf(coastEdit.getText().toString()), type));
                 setResult(RESULT_OK, result);
+                ((App) getApplication()).setAfterAddItem(true);
                 finish();
             }
         });
