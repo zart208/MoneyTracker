@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 
 import com.loftschool.moneytracker.api.AddItemResult;
 import com.loftschool.moneytracker.api.LSApi;
-import com.loftschool.moneytracker.api.LogoutResult;
 import com.loftschool.moneytracker.api.RemoveResult;
 
 import java.util.ArrayList;
@@ -214,20 +213,6 @@ public class ItemsFragment extends Fragment {
                 }
             });
         }
-    }
-
-    private void logout() {
-        api.logout().enqueue(new Callback<LogoutResult>() {
-            @Override
-            public void onResponse(Call<LogoutResult> call, Response<LogoutResult> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<LogoutResult> call, Throwable t) {
-                t.getMessage();
-            }
-        });
     }
 
     @Override

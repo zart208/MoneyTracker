@@ -25,7 +25,6 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.NONE;
 public class App extends Application {
     private static final String KEY_AUTH_TOKEN = "auth-token";
     private static final String PREFERENCES_SESSION = "session";
-    private static final String TAG = "App";
     private boolean isAfterAddItem = false;
     private LSApi api;
 

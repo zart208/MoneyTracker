@@ -19,6 +19,7 @@
     <string name="action_title">%1$d selected</string>
     <string name="caption_text">Ваш незаменимый помощник в управлении бюджетом</string>
     <string name="balance_total_caption">ваш баланс</string>
+    <string name="menu_item_text">Logout</string>
 
     <string-array name="tabs_titles">
         <item>@string/tab_expenses</item>
