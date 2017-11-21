@@ -7,9 +7,9 @@
     <string name="price_regex_string">%1$s %2$s</string>
     <string name="add_activity_title">Новая запись</string>
     <string name="main_activity_title">Учет бюджета</string>
-    <string name="tab_expenses">Расходы</string>
-    <string name="tab_incomes">Доходы</string>
-    <string name="tab_balance">Баланс</string>
+    <string name="tab_expenses">РАСХОДЫ</string>
+    <string name="tab_incomes">ДОХОДЫ</string>
+    <string name="tab_balance">БАЛАНС</string>
     <string name="under_construction_description">Under Construction</string>
     <string name="error">Error!!!</string>
     <string name="erorr_item_adding_text">Error during item adding!!!</string>
@@ -18,6 +18,7 @@
     <string name="confirm_remove">Delete selected items?</string>
     <string name="action_title">%1$d selected</string>
     <string name="caption_text">Ваш незаменимый помощник в управлении бюджетом</string>
+    <string name="balance_total_caption">ваш баланс</string>
 
     <string-array name="tabs_titles">
         <item>@string/tab_expenses</item>

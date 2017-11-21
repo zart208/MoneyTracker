@@ -1,7 +1,6 @@
 package com.loftschool.moneytracker.api;
 
-public class AuthResult {
-    public String status;
+public class AuthResult extends Result {
     public int userID;
     public String authToken;
 }

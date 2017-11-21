@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +38,7 @@ import static com.loftschool.moneytracker.Item.TYPE_UNKNOWN;
 
 public class ItemsFragment extends Fragment {
     public static final int RC_CONFIRM = 111;
+    private static final String TAG = "ItemsFragment";
     private static final String KEY_TYPE = "TYPE";
     RecyclerView recyclerView;
     FloatingActionButton fab;
@@ -81,6 +83,7 @@ public class ItemsFragment extends Fragment {
     };
 
     public static ItemsFragment createItemsFragment(String type) {
+        Log.d(TAG, "createItemsFragment: ");
         Bundle bundle = new Bundle();
         bundle.putString(ItemsFragment.KEY_TYPE, type);
         ItemsFragment fragment = new ItemsFragment();
@@ -91,6 +94,7 @@ public class ItemsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
         type = getArguments().getString(KEY_TYPE, TYPE_UNKNOWN);
         if (type.equals(TYPE_UNKNOWN)) {
             throw new IllegalStateException("Unknown fragment type");
@@ -102,11 +106,13 @@ public class ItemsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
         return inflater.inflate(R.layout.fragment_items, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated: ");
         fab = view.findViewById(R.id.fab_add);
         recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -164,6 +170,7 @@ public class ItemsFragment extends Fragment {
     }
 
     private void loadItems() {
+        Log.d(TAG, "loadItems: ");
         api.items(type).enqueue(new Callback<List<Item>>() {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {

@@ -24,4 +24,8 @@
     <dimen name="fab_height">56dp</dimen>
     <dimen name="light_shadow">2dp</dimen>
     <dimen name="shadow">6dp</dimen>
+    <dimen name="balance_total_text_size">50sp</dimen>
+    <dimen name="balance_total_caption_text_size">20sp</dimen>
+    <dimen name="balance_categories_text_size">24sp</dimen>
+    <dimen name="balance_categories_caption_text_size">13sp</dimen>
 </resources>

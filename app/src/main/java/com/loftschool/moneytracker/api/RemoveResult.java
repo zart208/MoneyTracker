@@ -1,6 +1,5 @@
 package com.loftschool.moneytracker.api;
 
-public class RemoveResult {
-    public String status;
+public class RemoveResult extends Result {
     public int id;
 }
