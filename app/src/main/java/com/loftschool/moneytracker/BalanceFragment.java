@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BalanceFragment extends Fragment {
-    private static final String TAG = "BalanceFragment";
     private TextView balance;
     private TextView expense;
     private TextView income;
@@ -26,40 +24,35 @@ public class BalanceFragment extends Fragment {
     private LSApi api;
 
     public static BalanceFragment createFragment() {
-        Log.d(TAG, "createFragment: ");
         return new BalanceFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: ");
         api = ((App) getActivity().getApplication()).getApi();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: ");
         return inflater.inflate(R.layout.fragment_balance, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "onViewCreated: ");
         balance = view.findViewById(R.id.total_balance);
         expense = view.findViewById(R.id.balance_expenses);
         income = view.findViewById(R.id.balance_income);
         diagram = view.findViewById(R.id.diagram);
+        updateData();
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.d(TAG, "setUserVisibleHint: ");
         if (isVisibleToUser && isResumed()) {
-            Log.d(TAG, "setUserVisibleHint: true");
             updateData();
         }
     }

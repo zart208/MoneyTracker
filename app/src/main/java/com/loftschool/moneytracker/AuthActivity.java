@@ -54,7 +54,7 @@ public class AuthActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<AuthResult> call, Response<AuthResult> response) {
                         AuthResult authResult = response.body();
-                        if (authResult != null ) {
+                        if (authResult != null) {
                             ((App) getApplication()).setAuthToken(authResult.authToken);
                             ((App) getApplication()).setAfterAddItem(false);
                             finish();
