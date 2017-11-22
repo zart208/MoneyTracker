@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loftschool.moneytracker.api.Item;
+
 public class AddActivity extends AppCompatActivity {
     public static final String EXTRA_TYPE = "type";
     public static final String RESULT_ITEM = "item";
@@ -78,6 +80,7 @@ public class AddActivity extends AppCompatActivity {
                 Intent result = new Intent();
                 result.putExtra(RESULT_ITEM, new Item(captionEdit.getText().toString(), Integer.valueOf(coastEdit.getText().toString()), type));
                 setResult(RESULT_OK, result);
+                ((App) getApplication()).setAfterAddItem(true);
                 finish();
             }
         });

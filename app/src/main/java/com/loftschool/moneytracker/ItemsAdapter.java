@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.loftschool.moneytracker.api.Item;
+
 import java.util.ArrayList;
 import java.util.List;
 

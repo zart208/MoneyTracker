@@ -3,16 +3,17 @@ package com.loftschool.moneytracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.loftschool.moneytracker.api.AuthResult;
 import com.loftschool.moneytracker.api.LSApi;
 
 import retrofit2.Call;
@@ -32,6 +33,7 @@ public class AuthActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
+        ((App) getApplication()).mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         googleApiClient = new GoogleApiClient.Builder(this).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
         SignInButton signInButton = findViewById(R.id.login_button);
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -54,8 +56,9 @@ public class AuthActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<AuthResult> call, Response<AuthResult> response) {
                         AuthResult authResult = response.body();
-                        if (authResult != null ) {
+                        if (authResult != null) {
                             ((App) getApplication()).setAuthToken(authResult.authToken);
+                            ((App) getApplication()).setAfterAddItem(false);
                             finish();
                         } else {
                             showError(getString(R.string.error));

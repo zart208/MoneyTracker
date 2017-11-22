@@ -3,6 +3,7 @@ package com.loftschool.moneytracker;
 import android.app.Application;
 import android.text.TextUtils;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,7 +26,8 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.NONE;
 public class App extends Application {
     private static final String KEY_AUTH_TOKEN = "auth-token";
     private static final String PREFERENCES_SESSION = "session";
-    private static final String TAG = "App";
+    public GoogleSignInClient mGoogleSignInClient;
+    private boolean isAfterAddItem = false;
     private LSApi api;
 
     @Override
@@ -52,6 +54,14 @@ public class App extends Application {
                 .build();
 
         api = retrofit.create(LSApi.class);
+    }
+
+    public boolean isAfterAddItem() {
+        return isAfterAddItem;
+    }
+
+    public void setAfterAddItem(boolean afterAddItem) {
+        isAfterAddItem = afterAddItem;
     }
 
     public LSApi getApi() {
