@@ -1,7 +1,5 @@
 package com.loftschool.moneytracker.api;
 
-import com.loftschool.moneytracker.Item;
-
 import java.util.List;
 
 import retrofit2.Call;

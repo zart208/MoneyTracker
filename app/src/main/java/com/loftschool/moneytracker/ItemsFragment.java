@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.loftschool.moneytracker.api.AddItemResult;
+import com.loftschool.moneytracker.api.Item;
 import com.loftschool.moneytracker.api.LSApi;
 import com.loftschool.moneytracker.api.RemoveResult;
 
@@ -32,7 +33,7 @@ import retrofit2.Response;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-import static com.loftschool.moneytracker.Item.TYPE_UNKNOWN;
+import static com.loftschool.moneytracker.api.Item.TYPE_UNKNOWN;
 
 public class ItemsFragment extends Fragment {
     public static final int RC_CONFIRM = 111;
